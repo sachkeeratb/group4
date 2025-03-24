@@ -8,7 +8,7 @@ const router = express.Router();
 router.get("/history", auth, chatController.getChatHistory);
 
 // Send a new message
-router.post("/message", chatController.processMessage);
+router.post("/message", auth, chatController.processMessage);
 
 // Save a chat message for logged-in users
 router.post("/save", auth, chatController.saveMessage);

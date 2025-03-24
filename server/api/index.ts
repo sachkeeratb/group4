@@ -14,22 +14,26 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: (process.env.CLIENT_URL as string) || "http://localhost:3000",
     credentials: true,
+    allowedHeaders: ["*"],
   })
 );
 app.use(express.json());
 app.use(cookieParser());
 
 const uri = process.env.MONGODB_URI as string;
-const clientOptions = {
-  serverApi: { version: "1", strict: true, deprecationErrors: true },
-} as const;
 
 async function run() {
   try {
-    // Create a Mongoose client with a MongoClientOptions object to set the Stable API version
-    await mongoose.connect(uri, clientOptions);
+    // Create a Mongoose client with the serverApi option directly in the connect call
+    await mongoose.connect(uri, {
+      serverApi: {
+        version: "1",
+        strict: true,
+        deprecationErrors: true,
+      },
+    });
     await mongoose.connection.db?.admin().command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"

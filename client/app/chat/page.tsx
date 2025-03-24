@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/card";
 import { ChatMessage } from "@/components/chat-message";
 import { ToolSelector } from "@/components/tool-selector";
 import { sendChatMessage } from "@/lib/api";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 type Message = {
   id: string;
@@ -146,6 +147,8 @@ export default function ChatPage() {
           {isLoading ? "Thinking..." : "Send"}
         </Button>
       </form>
+
+      {isLoading && <LoadingSpinner />}
 
       {!session && (
         <p className="text-sm text-muted-foreground mt-4 text-center">
